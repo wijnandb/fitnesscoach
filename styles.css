@@ -1,0 +1,23 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background: #333;
+  color: #fff;
+  padding: 1em;
+}
+main {
+  padding: 2em;
+}
+button {
+  margin: 0.5em;
+  padding: 1em 2em;
+  font-size: 1em;
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}
