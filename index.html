@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Level Up Fitness</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Level Up Fitness</h1>
+  </header>
+
+  <main id="workout-screen">
+    <h2 id="level-title">Level 1: Wall Push-ups</h2>
+    <p id="exercise-desc">Do 3 Sets of 10 Reps Today</p>
+
+    <button class="set-btn" onclick="completeSet()">Complete Set</button>
+    <p id="progress">Sets Completed: 0/3</p>
+
+    <button class="level-up-btn" onclick="levelUp()" disabled>Level Up!</button>
+  </main>
+
+  <footer>
+    <button onclick="showWorkout()">Workout</button>
+    <button onclick="showLevels()">Levels</button>
+    <button onclick="showProfile()">Profile</button>
+  </footer>
+
+  <div id="levels-screen" class="hidden">
+    <h2>Push-up Progression</h2>
+    <ul id="levels-list"></ul>
+  </div>
+
+  <div id="profile-screen" class="hidden">
+    <h2>Profile</h2>
+    <p id="profile-level"></p>
+    <p id="profile-xp"></p>
+    <p id="profile-streak"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
