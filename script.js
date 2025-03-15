@@ -71,4 +71,28 @@ function showProfile() {
   document.getElementById('profile-screen').classList.remove('hidden');
 }
 
+function completeSet() {
+  setsCompleted++;
+  document.getElementById('progress').innerText = `Sets Completed: ${setsCompleted}/3`;
+
+  if (setsCompleted >= 3) {
+    document.querySelector('.level-up-btn').disabled = false;
+    totalXP += 50;
+    streak += 1;
+  }
+
+  saveProgress(); // Save after completing a set
+}
+
+function levelUp() {
+  if (currentLevel < exercises.length) {
+    currentLevel++;
+    setsCompleted = 0;
+    document.querySelector('.level-up-btn').disabled = true;
+    updateWorkoutScreen();
+  }
+
+  saveProgress(); // Save after leveling up
+}
+
 showWorkout(); // Default screen on load
