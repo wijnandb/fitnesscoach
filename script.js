@@ -11,6 +11,29 @@ const exercises = [
   // Add more levels later!
 ];
 
+// Save state to localStorage
+function saveProgress() {
+  const progress = {
+    currentLevel,
+    setsCompleted,
+    totalXP,
+    streak
+  };
+  localStorage.setItem('fitnessProgress', JSON.stringify(progress));
+}
+
+// Load state from localStorage
+function loadProgress() {
+  const storedProgress = localStorage.getItem('fitnessProgress');
+  if (storedProgress) {
+    const progress = JSON.parse(storedProgress);
+    currentLevel = progress.currentLevel || 1;
+    setsCompleted = progress.setsCompleted || 0;
+    totalXP = progress.totalXP || 0;
+    streak = progress.streak || 0;
+  }
+}
+
 function completeSet() {
   setsCompleted++;
   document.getElementById('progress').innerText = `Sets Completed: ${setsCompleted}/3`;
@@ -95,4 +118,6 @@ function levelUp() {
   saveProgress(); // Save after leveling up
 }
 
-showWorkout(); // Default screen on load
+loadProgress();
+showWorkout(); // Render the workout screen with loaded data
+
