@@ -392,4 +392,36 @@ function renderHistory() {
 }
 
 // ─── Initialize ────────────────────────────────────────────────
-renderAll();
+if (typeof document !== "undefined" && document.getElementById("app")) {
+  renderAll();
+}
+
+// ─── Exports for testing ───────────────────────────────────────
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    DEFAULT_EXERCISES,
+    STORAGE_KEY,
+    loadLogs,
+    saveLogs,
+    getToday,
+    getDayKey,
+    getStreak,
+    getPersonalBests,
+    getTodayStats,
+    getTodayCounts,
+    findExercise,
+    logExercise,
+    openModal,
+    closeModal,
+    adjustReps,
+    adjustWeight,
+    submitCustomLog,
+    switchTab,
+    renderAll,
+    _getLogs: function() { return logs; },
+    _setLogs: function(newLogs) { logs = newLogs; },
+    _getModalReps: function() { return modalReps; },
+    _getModalWeight: function() { return modalWeight; },
+    _getCurrentModalExercise: function() { return currentModalExercise; },
+  };
+}
