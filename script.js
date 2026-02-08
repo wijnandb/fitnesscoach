@@ -284,11 +284,7 @@ function renderExerciseGrid() {
   var html = "";
   DEFAULT_EXERCISES.forEach(function(ex) {
     var count = counts[ex.id] || 0;
-    html += '<button class="exercise-btn" data-exercise="' + ex.id + '" ';
-    html += 'onclick="quickLog(\'' + ex.id + '\')" ';
-    html += 'oncontextmenu="event.preventDefault();openModal(\'' + ex.id + '\')" ';
-    html += 'ontouchstart="this._timer=setTimeout(function(){openModal(\'' + ex.id + '\')},500)" ';
-    html += 'ontouchend="clearTimeout(this._timer)">';
+    html += '<button class="exercise-btn" data-exercise="' + ex.id + '">';
     html += '<span class="ex-icon">' + ex.icon + '</span>';
     html += '<span class="ex-name">' + ex.name + '</span>';
     html += '<span class="ex-default">' + ex.defaultReps + ' ' + ex.unit + '</span>';
@@ -298,6 +294,46 @@ function renderExerciseGrid() {
     html += '</button>';
   });
   container.innerHTML = html;
+
+  // Attach touch/click handlers with long-press detection
+  container.querySelectorAll(".exercise-btn").forEach(function(btn) {
+    var exId = btn.getAttribute("data-exercise");
+    var longPressed = false;
+    var timer = null;
+
+    btn.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      openModal(exId);
+    });
+
+    btn.addEventListener("touchstart", function(e) {
+      longPressed = false;
+      timer = setTimeout(function() {
+        longPressed = true;
+        openModal(exId);
+      }, 500);
+    }, { passive: true });
+
+    btn.addEventListener("touchend", function(e) {
+      clearTimeout(timer);
+      if (longPressed) {
+        e.preventDefault();
+        return;
+      }
+    });
+
+    btn.addEventListener("touchmove", function() {
+      clearTimeout(timer);
+    }, { passive: true });
+
+    btn.addEventListener("click", function(e) {
+      if (longPressed) {
+        longPressed = false;
+        return;
+      }
+      quickLog(exId);
+    });
+  });
 }
 
 function renderRecent() {
