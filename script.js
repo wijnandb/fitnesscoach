@@ -295,43 +295,10 @@ function renderExerciseGrid() {
   });
   container.innerHTML = html;
 
-  // Attach touch/click handlers with long-press detection
   container.querySelectorAll(".exercise-btn").forEach(function(btn) {
     var exId = btn.getAttribute("data-exercise");
-    var longPressed = false;
-    var timer = null;
-
-    btn.addEventListener("contextmenu", function(e) {
-      e.preventDefault();
+    btn.addEventListener("click", function() {
       openModal(exId);
-    });
-
-    btn.addEventListener("touchstart", function(e) {
-      longPressed = false;
-      timer = setTimeout(function() {
-        longPressed = true;
-        openModal(exId);
-      }, 500);
-    }, { passive: true });
-
-    btn.addEventListener("touchend", function(e) {
-      clearTimeout(timer);
-      if (longPressed) {
-        e.preventDefault();
-        return;
-      }
-    });
-
-    btn.addEventListener("touchmove", function() {
-      clearTimeout(timer);
-    }, { passive: true });
-
-    btn.addEventListener("click", function(e) {
-      if (longPressed) {
-        longPressed = false;
-        return;
-      }
-      quickLog(exId);
     });
   });
 }
