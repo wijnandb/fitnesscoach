@@ -1,12 +1,10 @@
-const CACHE_NAME = 'fitness-cache-v1';
+const CACHE_NAME = 'repstack-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
   './styles.css',
   './script.js',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './manifest.json'
 ];
 
 // Install SW and cache files
@@ -17,6 +15,20 @@ self.addEventListener('install', event => {
       return cache.addAll(urlsToCache);
     })
   );
+  self.skipWaiting();
+});
+
+// Clean old caches on activate
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 // Fetch resources
