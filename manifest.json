@@ -1,11 +1,11 @@
 {
-  "name": "Level Up Fitness",
-  "short_name": "Fitness",
+  "name": "RepStack",
+  "short_name": "RepStack",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#333333",
-  "description": "Level up your fitness with progressive workouts!",
+  "background_color": "#0a0a1a",
+  "theme_color": "#0a0a1a",
+  "description": "Every rep counts. Track your workouts with quick-tap logging.",
   "icons": [
     {
       "src": "icons/icon-192.png",

@@ -2,53 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Level Up Fitness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>RepStack</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#333333" />
+  <meta name="theme-color" content="#0a0a1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <h1>Level Up Fitness</h1>
-  </header>
+  <div id="app">
+    <!-- Notification Toast -->
+    <div id="notification" class="notification hidden"></div>
 
-  <main id="workout-screen">
-    <h2 id="level-title">Level 1: Wall Push-ups</h2>
-    <p id="exercise-desc">Do 3 Sets of 10 Reps Today</p>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-inner">
+        <div>
+          <h1 class="app-title">RepStack</h1>
+          <p class="app-subtitle">EVERY REP COUNTS</p>
+        </div>
+        <div id="streak-badge" class="streak-badge hidden">
+          <div class="streak-value" id="streak-value"></div>
+          <div class="streak-label">streak</div>
+        </div>
+      </div>
+    </div>
 
-    <button class="set-btn" onclick="completeSet()">Complete Set</button>
-    <p id="progress">Sets Completed: 0/3</p>
+    <!-- Today Stats -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-value accent-1" id="stat-sets">0</div>
+        <div class="stat-label">SETS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value accent-2" id="stat-reps">0</div>
+        <div class="stat-label">REPS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value accent-3" id="stat-exercises">0</div>
+        <div class="stat-label">EXERCISES</div>
+      </div>
+    </div>
 
-    <button class="level-up-btn" onclick="levelUp()" disabled>Level Up!</button>
-  </main>
+    <!-- Tab Switcher -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-log" onclick="switchTab('log')">&#9889; Quick Log</button>
+      <button class="tab-btn" id="tab-history" onclick="switchTab('history')">&#128202; History</button>
+    </div>
 
-  <footer>
-    <button onclick="showWorkout()">Workout</button>
-    <button onclick="showLevels()">Levels</button>
-    <button onclick="showProfile()">Profile</button>
-  </footer>
+    <!-- Log View -->
+    <div id="view-log" class="view">
+      <!-- Weekly Chart -->
+      <div class="week-chart" id="week-chart">
+        <div class="section-label">This Week</div>
+        <div class="chart-bars" id="chart-bars"></div>
+      </div>
 
-  <div id="levels-screen" class="hidden">
-    <h2>Push-up Progression</h2>
-    <ul id="levels-list"></ul>
-  </div>
+      <!-- Quick Log Grid -->
+      <div class="exercise-section">
+        <div class="section-label">Tap to log &middot; Hold for custom</div>
+        <div class="exercise-grid" id="exercise-grid"></div>
+      </div>
 
-  <div id="profile-screen" class="hidden">
-    <h2>Profile</h2>
-    <p id="profile-level"></p>
-    <p id="profile-xp"></p>
-    <p id="profile-streak"></p>
+      <!-- Recent Activity -->
+      <div id="recent-section" class="recent-section hidden">
+        <div class="section-label">Recent</div>
+        <div id="recent-logs"></div>
+      </div>
+    </div>
+
+    <!-- History View -->
+    <div id="view-history" class="view hidden">
+      <div id="history-content"></div>
+    </div>
+
+    <!-- Custom Log Modal -->
+    <div id="custom-modal" class="modal-overlay hidden" onclick="closeModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-icon" id="modal-icon"></span>
+          <h3 class="modal-title" id="modal-title"></h3>
+        </div>
+        <div class="modal-inputs">
+          <div class="number-input-group">
+            <span class="number-label">REPS</span>
+            <div class="number-controls">
+              <button class="num-btn" onclick="adjustReps(-1)">&minus;</button>
+              <span class="number-value" id="modal-reps">10</span>
+              <button class="num-btn num-btn-plus" onclick="adjustReps(1)">+</button>
+            </div>
+          </div>
+          <div id="weight-group" class="number-input-group hidden">
+            <span class="number-label">WEIGHT</span>
+            <div class="number-controls">
+              <button class="num-btn" onclick="adjustWeight(-2.5)">&minus;</button>
+              <span class="number-value" id="modal-weight">0</span>
+              <button class="num-btn num-btn-plus" onclick="adjustWeight(2.5)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+          <button class="modal-submit" onclick="submitCustomLog()">Log It</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => console.log('Service Worker Registered!', reg))
-      .catch(err => console.log('Service Worker registration failed: ', err));
-  }
-</script>
-
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Service Worker Registered!', reg))
+        .catch(err => console.log('Service Worker registration failed: ', err));
+    }
+  </script>
 </body>
 </html>
